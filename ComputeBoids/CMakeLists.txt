@@ -1,10 +1,11 @@
 ﻿cmake_minimum_required (VERSION 3.8)
 
-add_executable (ComputeBoids "")
+add_executable (ComputeBoids)
 
 target_compile_features(ComputeBoids PRIVATE
   cxx_std_20
-  cxx_aggregate_default_initializers)
+  cxx_aggregate_default_initializers
+)
 
 target_include_directories(ComputeBoids
   PUBLIC ${VULKAN_INCLUDE_DIRS})

@@ -1,2 +1,4 @@
+target_include_directories(ComputeBoids PUBLIC VulkanEngine)
+
 add_subdirectory(src)
 add_subdirectory(include)
