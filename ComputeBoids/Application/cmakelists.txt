@@ -1,2 +1,18 @@
+# Application top-level
+
+project(BoidsApplication)
+add_executable(boids_application)
+
+target_compile_features(boids_application PRIVATE
+  cxx_std_20
+  cxx_aggregate_default_initializers
+)
+
+target_link_libraries(boids_application PRIVATE 
+  vulkan_engine
+  glfw)
+
+include_directories(${VulkanEngine_SOURCE_DIR}/include)
+
 add_subdirectory(src)
 add_subdirectory(include)

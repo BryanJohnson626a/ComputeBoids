@@ -1,7 +1,14 @@
-set(ENGINE_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+# Engine top level cmake
 
-message("AHOIFHODIFNSOAF:SOAIDJF>SLDIFJ:OCIVNPOXCIVJNPZXIOJFNEASF")
-message(${ENGINE_INCLUDE})
+project(VulkanEngine)
+add_library(vulkan_engine)
+
+target_compile_features(vulkan_engine PRIVATE
+  cxx_std_20
+  cxx_aggregate_default_initializers
+)
+
+target_link_libraries(vulkan_engine PUBLIC Vulkan::Vulkan)
 
 add_subdirectory(src)
 add_subdirectory(include)

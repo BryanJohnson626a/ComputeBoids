@@ -1,4 +1,6 @@
-﻿cmake_minimum_required(VERSION 3.8)
+﻿# Top-level Cmake
+
+cmake_minimum_required(VERSION 3.8)
 
 set(HUNTER_ROOT "/cmake")
 include("cmake/HunterGate.cmake")

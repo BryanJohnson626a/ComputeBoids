@@ -1,4 +1,6 @@
-target_sources(VulkanEngine PRIVATE 
+# Engine src
+
+target_sources(vulkan_engine PRIVATE 
   "${CMAKE_CURRENT_SOURCE_DIR}/engine.cpp"
 )
 
