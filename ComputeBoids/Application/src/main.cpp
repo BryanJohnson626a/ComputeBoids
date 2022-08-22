@@ -1,7 +1,5 @@
 #include <iostream>
-
-#include "../../Engine/include/engine.hpp"
-
+#include <vector>
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
 
@@ -21,7 +19,7 @@ int main(void)
   std::vector<const char *> extensions;
   extensions.assign(GLFWExtensions, GLFWExtensions + count);
 
-  Engine engine(extensions);
+ // Engine engine(extensions);
 
   glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
   GLFWwindow * window = glfwCreateWindow(640, 480, "Window Title", NULL, NULL);
