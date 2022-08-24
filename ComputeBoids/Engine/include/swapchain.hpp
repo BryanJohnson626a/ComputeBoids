@@ -1,0 +1,7 @@
+
+
+class Swapchain
+{
+public:
+private:
+};

@@ -8,7 +8,12 @@ target_compile_features(vulkan_engine PRIVATE
   cxx_aggregate_default_initializers
 )
 
-target_link_libraries(vulkan_engine PUBLIC Vulkan::Vulkan)
+target_link_libraries(vulkan_engine PUBLIC
+  Vulkan::Vulkan
+  glfw
+)
+
+include_directories(${VulkanEngine_SOURCE_DIR}/include)
 
 add_subdirectory(src)
 add_subdirectory(include)

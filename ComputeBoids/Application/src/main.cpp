@@ -15,14 +15,16 @@ int main(void)
   }
 
   uint32_t count{};
-  const char * const * GLFWExtensions = glfwGetRequiredInstanceExtensions(&count);
+  const char *const *GLFWExtensions = glfwGetRequiredInstanceExtensions(&count);
   std::vector<const char *> extensions;
   extensions.assign(GLFWExtensions, GLFWExtensions + count);
 
-  Engine engine(extensions);
-
   glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
   GLFWwindow * window = glfwCreateWindow(640, 480, "Window Title", NULL, NULL);
+
+  Engine engine(extensions);
+
+  engine.create_renderer_from_window(window);
 
   //bool quit = false;
   //while (!quit)

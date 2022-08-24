@@ -20,4 +20,3 @@ find_package(Vulkan REQUIRED FATAL_ERROR)
 find_package(glfw3 REQUIRED)
 
 add_subdirectory("ComputeBoids")
-

@@ -1,8 +1,9 @@
-#include "../include/engine.hpp"
+#include <iostream>
+#include <exception>
+
+#include "engine.hpp"
 
 VULKAN_HPP_DEFAULT_DISPATCH_LOADER_DYNAMIC_STORAGE
-
-#include <iostream>
 
 VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
   VkDebugUtilsMessageTypeFlagsEXT messageType, const VkDebugUtilsMessengerCallbackDataEXT * pCallbackData,
@@ -18,18 +19,18 @@ Engine::Engine(std::vector<const char *> required_extensions) :
   init_loader();
 
   if (!init_instance())
-    throw std::exception("Could not create instance.");
+    throw std::runtime_error("Could not create instance.");
 
 #ifndef NDEBUG
   if (!create_debug_messenger())
-    throw std::exception("Could not create debug messenger.");
+    throw std::runtime_error("Could not create debug messenger.");
 #endif
 
   if (!choose_physical_device())
-    throw std::exception("Could not find a valid physical device.");
+    throw std::runtime_error("Could not find a valid physical device.");
 
   if (!create_logical_device())
-    throw std::exception("Could not create a logical device.");
+    throw std::runtime_error("Could not create a logical device.");
 
 }
 
@@ -248,5 +249,18 @@ bool Engine::create_logical_device()
 
   _device = value;
 
+  return true;
+}
+
+bool Engine::create_renderer_from_window(GLFWwindow * window_handle)
+{
+  VkSurfaceKHR surface_cstyle;
+  auto result = glfwCreateWindowSurface(_instance, window_handle, nullptr, &surface_cstyle);
+  vk::SurfaceKHR surface = surface_cstyle;
+
+  if (result != VkResult::VK_SUCCESS)
+    return false;
+
+  _renderer.initialize_with_surface(surface);
   return true;
 }

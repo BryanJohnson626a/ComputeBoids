@@ -10,7 +10,8 @@ target_compile_features(boids_application PRIVATE
 
 target_link_libraries(boids_application PRIVATE 
   vulkan_engine
-  glfw)
+  glfw
+)
 
 include_directories(${VulkanEngine_SOURCE_DIR}/include)
 

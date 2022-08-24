@@ -1,14 +1,20 @@
 #define VULKAN_HPP_DISPATCH_LOADER_DYNAMIC 1
+#define VULKAN_HPP_TYPESAFE_CONVERSION 1
 #define VULKAN_HPP_NO_CONSTRUCTORS
 #define VULKAN_HPP_NO_EXCEPTIONS
+
 #include <vulkan/vulkan.hpp>
 #include <vector>
+#include <GLFW/glfw3.h>
+#include "renderer.hpp"
 
-
-class Engine {
+class Engine
+{
 public:
   Engine(std::vector<const char *> required_extensions);
   ~Engine();
+
+  bool create_renderer_from_window(GLFWwindow * window_handle);
 private:
   void init_loader();
   bool init_instance();
@@ -18,6 +24,8 @@ private:
   void enable_debug_validation();
   bool choose_physical_device();
   bool create_logical_device();
+
+  Renderer _renderer;
 
   vk::DynamicLoader _dl;
   vk::Instance _instance;
