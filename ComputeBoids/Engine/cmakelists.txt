@@ -1,7 +1,10 @@
 # Engine top level cmake
 
 project(VulkanEngine)
-add_library(vulkan_engine)
+add_library(vulkan_engine src/surface.cpp src/surface.hpp
+        src/renderer.cpp src/renderer.hpp
+        src/engine.cpp src/engine.hpp
+        src/swapchain.cpp src/swapchain.hpp src/vulkan_includes.hpp)
 
 target_compile_features(vulkan_engine PRIVATE
   cxx_std_20
@@ -13,7 +16,5 @@ target_link_libraries(vulkan_engine PUBLIC
   glfw
 )
 
-include_directories(${VulkanEngine_SOURCE_DIR}/include)
+include_directories(${VulkanEngine_SOURCE_DIR}/src)
 
-add_subdirectory(src)
-add_subdirectory(include)

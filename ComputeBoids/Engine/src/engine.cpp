@@ -2,7 +2,7 @@
 #include <exception>
 
 #include "engine.hpp"
-
+#include "surface.hpp"
 VULKAN_HPP_DEFAULT_DISPATCH_LOADER_DYNAMIC_STORAGE
 
 VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
@@ -121,8 +121,8 @@ bool Engine::check_instance_extension_support()
     bool found = false;
     std::cout << "Checking for " << required_extension << "... ";
 
-    for (const auto & avalable_extension : available_instance_extensions.value)
-      if (strcmp(required_extension, avalable_extension.extensionName) == 0)
+    for (const auto & available_extension : available_instance_extensions.value)
+      if (strcmp(required_extension, available_extension.extensionName) == 0)
       {
         std::cout << "found!\n";
         found = true;
@@ -149,8 +149,8 @@ bool Engine::check_validation_layer_support()
     bool found = false;
     std::cout << "Checking for " << required_layer << "... ";
 
-    for (const auto & avalable_layer : available_instance_layers.value)
-      if (strcmp(required_layer, avalable_layer.layerName) == 0)
+    for (const auto & available_layer : available_instance_layers.value)
+      if (strcmp(required_layer, available_layer.layerName) == 0)
       {
         std::cout << "found!\n";
         found = true;
@@ -220,6 +220,10 @@ bool Engine::create_logical_device()
 {
   auto queue_family_index = find_queue_family(_physical_device);
 
+  //TODO: Handle device extensions better
+  std::vector<const char *> extensions;
+  extensions.push_back("VK_KHR_swapchain");
+
   float queue_priority[1] = { 1 };
   vk::DeviceQueueCreateInfo device_queue_ci
   {
@@ -232,8 +236,10 @@ bool Engine::create_logical_device()
   {
     .queueCreateInfoCount = 1,
     .pQueueCreateInfos = &device_queue_ci,
+    .enabledExtensionCount = (uint32_t)extensions.size(),
+    .ppEnabledExtensionNames = extensions.data()
   };
-
+[]
   if (_validation_enabled)
   {
     device_ci.setEnabledLayerCount((uint32_t)_enabled_layers.size());
@@ -256,11 +262,14 @@ bool Engine::create_renderer_from_window(GLFWwindow * window_handle)
 {
   VkSurfaceKHR surface_cstyle;
   auto result = glfwCreateWindowSurface(_instance, window_handle, nullptr, &surface_cstyle);
-  vk::SurfaceKHR surface = surface_cstyle;
+
+  Surface surface(surface_cstyle);
+
+  //vk::SurfaceKHR surface = surface_cstyle;
 
   if (result != VkResult::VK_SUCCESS)
     return false;
 
-  _renderer.initialize_with_surface(surface);
+  _renderer.initialize_with_surface(_instance, _device, surface, _physical_device);
   return true;
 }

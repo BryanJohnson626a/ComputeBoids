@@ -1,8 +1,0 @@
-# Engine include
-
-target_sources(vulkan_engine PRIVATE 
-  "${CMAKE_CURRENT_SOURCE_DIR}/engine.hpp"
-  "${CMAKE_CURRENT_SOURCE_DIR}/renderer.hpp"
-  "${CMAKE_CURRENT_SOURCE_DIR}/swapchain.hpp"
-)
-

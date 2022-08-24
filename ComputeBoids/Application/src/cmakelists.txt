@@ -1,5 +1,0 @@
-# Application src
-
-target_sources(boids_application PRIVATE 
-  "${CMAKE_CURRENT_SOURCE_DIR}/main.cpp"
-)

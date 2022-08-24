@@ -1,9 +1,4 @@
-#define VULKAN_HPP_DISPATCH_LOADER_DYNAMIC 1
-#define VULKAN_HPP_TYPESAFE_CONVERSION 1
-#define VULKAN_HPP_NO_CONSTRUCTORS
-#define VULKAN_HPP_NO_EXCEPTIONS
-
-#include <vulkan/vulkan.hpp>
+#include <vulkan_includes.hpp>
 #include <vector>
 #include <GLFW/glfw3.h>
 #include "renderer.hpp"

@@ -2,7 +2,7 @@
 #include <vector>
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
-#include <engine.hpp>
+#include "../../Engine/src/engine.hpp"
 
 int main(void)
 {
@@ -26,12 +26,14 @@ int main(void)
 
   engine.create_renderer_from_window(window);
 
-  //bool quit = false;
+  std::cout << "created renderer successfully" << std::endl;
+
+ // bool quit = false;
   //while (!quit)
   //{
   //}
 
-  system("pause");
+ // system("pause");
 
   return 0;
 }

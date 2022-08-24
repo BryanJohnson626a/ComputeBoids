@@ -1,7 +1,7 @@
 # Application top-level
 
 project(BoidsApplication)
-add_executable(boids_application)
+add_executable(boids_application src/main.cpp)
 
 target_compile_features(boids_application PRIVATE
   cxx_std_20
@@ -13,7 +13,4 @@ target_link_libraries(boids_application PRIVATE
   glfw
 )
 
-include_directories(${VulkanEngine_SOURCE_DIR}/include)
-
-add_subdirectory(src)
-add_subdirectory(include)
+include_directories(${VulkanEngine_SOURCE_DIR}/src)
