@@ -236,10 +236,10 @@ bool Engine::create_logical_device()
   {
     .queueCreateInfoCount = 1,
     .pQueueCreateInfos = &device_queue_ci,
-    .enabledExtensionCount = (uint32_t)extensions.size(),
+    .enabledExtensionCount = (uint32_t) extensions.size(),
     .ppEnabledExtensionNames = extensions.data()
   };
-[]
+
   if (_validation_enabled)
   {
     device_ci.setEnabledLayerCount((uint32_t)_enabled_layers.size());
