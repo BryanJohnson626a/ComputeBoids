@@ -3,6 +3,8 @@
 
 #include "engine.hpp"
 #include "surface.hpp"
+#include "utils.hpp"
+
 VULKAN_HPP_DEFAULT_DISPATCH_LOADER_DYNAMIC_STORAGE
 
 VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
@@ -101,13 +103,11 @@ bool Engine::create_debug_messenger()
                  | vk::DebugUtilsMessageTypeFlagBitsEXT::ePerformance,
     .pfnUserCallback = &debugCallback,
   };
-
-  auto [result, value] = _instance.createDebugUtilsMessengerEXT(debug_ci);
+  vk::Result result;
+  std::tie(result, _messenger) = _instance.createDebugUtilsMessengerEXT(debug_ci);
 
   if (result != vk::Result::eSuccess)
     return false;
-
-  _messenger = value;
 
   return true;
 }
@@ -205,17 +205,6 @@ bool Engine::choose_physical_device()
   return false;
 }
 
-uint32_t find_queue_family(const vk::PhysicalDevice & physical_device)
-{
-  auto queue_family_properties = physical_device.getQueueFamilyProperties();
-
-  for (uint32_t i = 0; i < queue_family_properties.size(); ++i)
-    if (queue_family_properties[i].queueFlags & (vk::QueueFlagBits::eGraphics | vk::QueueFlagBits::eCompute))
-      return i;
-
-  return -1;
-}
-
 bool Engine::create_logical_device()
 {
   auto queue_family_index = find_queue_family(_physical_device);
@@ -236,7 +225,7 @@ bool Engine::create_logical_device()
   {
     .queueCreateInfoCount = 1,
     .pQueueCreateInfos = &device_queue_ci,
-    .enabledExtensionCount = (uint32_t) extensions.size(),
+    .enabledExtensionCount = (uint32_t)extensions.size(),
     .ppEnabledExtensionNames = extensions.data()
   };
 
@@ -246,14 +235,13 @@ bool Engine::create_logical_device()
     device_ci.setPEnabledLayerNames(_enabled_layers);
   }
 
-  auto [result, value] = _physical_device.createDevice(device_ci);
+  vk::Result result;
+  std::tie(result, _device) = _physical_device.createDevice(device_ci);
 
   if (result != vk::Result::eSuccess)
     return false;
 
   std::cout << "Successfully created logical device.\n";
-
-  _device = value;
 
   return true;
 }
@@ -264,8 +252,6 @@ bool Engine::create_renderer_from_window(GLFWwindow * window_handle)
   auto result = glfwCreateWindowSurface(_instance, window_handle, nullptr, &surface_cstyle);
 
   Surface surface(surface_cstyle);
-
-  //vk::SurfaceKHR surface = surface_cstyle;
 
   if (result != VkResult::VK_SUCCESS)
     return false;

@@ -38,5 +38,3 @@ private:
 #endif
 
 };
-
-uint32_t find_queue_family(const vk::PhysicalDevice & physical_device);

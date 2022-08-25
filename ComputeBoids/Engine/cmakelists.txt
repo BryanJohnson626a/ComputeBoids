@@ -1,10 +1,13 @@
 # Engine top level cmake
 
 project(VulkanEngine)
-add_library(vulkan_engine src/surface.cpp src/surface.hpp
+add_library(vulkan_engine 
+        src/surface.cpp src/surface.hpp
+        src/buffer.cpp src/buffer.hpp
         src/renderer.cpp src/renderer.hpp
         src/engine.cpp src/engine.hpp
-        src/swapchain.cpp src/swapchain.hpp src/vulkan_includes.hpp)
+        src/swapchain.cpp src/swapchain.hpp
+        src/vulkan_includes.hpp "src/utils.cpp")
 
 target_compile_features(vulkan_engine PRIVATE
   cxx_std_20

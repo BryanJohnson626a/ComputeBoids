@@ -1,8 +1,5 @@
-//
-// Created by James on 8/24/2022.
-//
-#include <vulkan_includes.hpp>
 #pragma once
+#include <vulkan_includes.hpp>
 class Surface
 {
 public:
