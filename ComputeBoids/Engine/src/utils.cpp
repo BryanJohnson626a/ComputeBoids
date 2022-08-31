@@ -1,7 +1,6 @@
 #include "utils.hpp"
 
-
-uint32_t find_queue_family(const vk::PhysicalDevice & physical_device)
+uint32_t FindQueueFamily(const vk::PhysicalDevice & physical_device)
 {
   auto queue_family_properties = physical_device.getQueueFamilyProperties();
 
@@ -12,7 +11,7 @@ uint32_t find_queue_family(const vk::PhysicalDevice & physical_device)
   return -1;
 }
 
-vk::Format get_supported_format(const vk::PhysicalDevice & physical_device,
+vk::Format GetSupportedFamily(const vk::PhysicalDevice & physical_device,
   const vk::ImageTiling & tiling, const vk::FormatFeatureFlags & features,
   const std::vector<vk::Format> & candidate_formats)
 {
@@ -40,4 +39,11 @@ uint32_t GetMemoryTypeIndex(const vk::PhysicalDevice & physical_device, const vk
   for (uint32_t i = 0; i < memory_properties.memoryTypeCount; ++i)
     if (memory_type_bitmask & (1 << i) && (memory_properties.memoryTypes[i].propertyFlags & flags) == flags)
       return i;
+
+  return -1;
+}
+
+void CompileShader(std::filesystem::path path)
+{
+
 }

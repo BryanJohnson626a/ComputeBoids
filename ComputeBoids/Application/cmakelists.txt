@@ -1,14 +1,14 @@
 # Application top-level
 
 project(BoidsApplication)
-add_executable(boids_application src/main.cpp)
+add_executable(ComputeBoids src/main.cpp)
 
-target_compile_features(boids_application PRIVATE
+target_compile_features(ComputeBoids PRIVATE
   cxx_std_20
   cxx_aggregate_default_initializers
 )
 
-target_link_libraries(boids_application PRIVATE 
+target_link_libraries(ComputeBoids PRIVATE 
   vulkan_engine
   glfw
 )

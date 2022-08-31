@@ -1,13 +1,20 @@
-#include "swapchain.hpp"
+#pragma once
 
+#include "swapchain.hpp"
+#include "commands.hpp"
 
 class Renderer
 {
 public:
-  Renderer();
-  ~Renderer();
+  void InitializeWithSurface(const vk::Instance & instance,
+    vk::Device & device, const Surface & surface,
+    const vk::PhysicalDevice & physicalDevice,
+    uint32_t submit_queue_index);
 
-  void initialize_with_surface(const vk::Instance& instance, const vk::Device& device, const Surface& surface, const vk::PhysicalDevice& physicalDevice);
+  void RecordTestCommand();
 private:
-    Swapchain _swapchain;
+  void InitializeCommandDispatch(const vk::Device & device, uint32_t submit_queue_index);
+
+  CommandDispatch _dispatch;
+  Swapchain _swapchain;
 };

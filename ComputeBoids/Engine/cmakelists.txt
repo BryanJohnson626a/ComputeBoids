@@ -2,12 +2,14 @@
 
 project(VulkanEngine)
 add_library(vulkan_engine 
-        src/surface.cpp src/surface.hpp
-        src/buffer.cpp src/buffer.hpp
-        src/renderer.cpp src/renderer.hpp
-        src/engine.cpp src/engine.hpp
-        src/swapchain.cpp src/swapchain.hpp
-        src/vulkan_includes.hpp "src/utils.cpp")
+        src/surface.cpp
+        src/buffer.cpp
+        src/renderer.cpp
+        src/engine.cpp
+        src/swapchain.cpp
+        src/commands.cpp
+        src/utils.cpp
+)
 
 target_compile_features(vulkan_engine PRIVATE
   cxx_std_20
@@ -17,6 +19,7 @@ target_compile_features(vulkan_engine PRIVATE
 target_link_libraries(vulkan_engine PUBLIC
   Vulkan::Vulkan
   glfw
+  #glslang::glslang
 )
 
 include_directories(${VulkanEngine_SOURCE_DIR}/src)

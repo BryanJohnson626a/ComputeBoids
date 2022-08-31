@@ -10,7 +10,7 @@ Surface::Surface(vk::SurfaceKHR vkSurface) {
   _handle = vkSurface;
 }
 
-vk::SurfaceCapabilitiesKHR Surface::get_surface_capabilities(const vk::PhysicalDevice & physicalDevice) const
+vk::SurfaceCapabilitiesKHR Surface::GetSurfaceCapabilities(const vk::PhysicalDevice & physicalDevice) const
 {
   auto [result, value] = physicalDevice.getSurfaceCapabilitiesKHR(_handle);
 
@@ -20,7 +20,7 @@ vk::SurfaceCapabilitiesKHR Surface::get_surface_capabilities(const vk::PhysicalD
   return value;
 }
 
-vk::PresentModeKHR Surface::get_preferred_present_mode(const vk::PhysicalDevice & physicalDevice) const
+vk::PresentModeKHR Surface::GetPreferredPresentMode(const vk::PhysicalDevice & physicalDevice) const
 {
   auto [result, presentModes] = physicalDevice.getSurfacePresentModesKHR(_handle);
 
@@ -43,17 +43,17 @@ vk::PresentModeKHR Surface::get_preferred_present_mode(const vk::PhysicalDevice 
   }
 }
 
-uint32_t Surface::get_min_image_count(const vk::PhysicalDevice & physicalDevice) const
+uint32_t Surface::GetMinImageCount(const vk::PhysicalDevice & physicalDevice) const
 {
 
-  vk::SurfaceCapabilitiesKHR capabilities = get_surface_capabilities(physicalDevice);
+  vk::SurfaceCapabilitiesKHR capabilities = GetSurfaceCapabilities(physicalDevice);
 
   return capabilities.minImageCount;
 
   //TODO: May be more cases to handle
 }
 
-vk::SurfaceFormatKHR Surface::get_preferred_image_format(const vk::PhysicalDevice & physicalDevice) const
+vk::SurfaceFormatKHR Surface::GetPreferredImageFormat(const vk::PhysicalDevice & physicalDevice) const
 {
   auto [result, availableFormats] = physicalDevice.getSurfaceFormatsKHR(_handle);
 

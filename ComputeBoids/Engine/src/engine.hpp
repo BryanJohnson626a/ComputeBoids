@@ -9,16 +9,16 @@ public:
   Engine(std::vector<const char *> required_extensions);
   ~Engine();
 
-  bool create_renderer_from_window(GLFWwindow * window_handle);
+  bool CreateRendererFromWindow(GLFWwindow * window_handle);
 private:
-  void init_loader();
-  bool init_instance();
-  bool create_debug_messenger();
-  bool check_instance_extension_support();
-  bool check_validation_layer_support();
-  void enable_debug_validation();
-  bool choose_physical_device();
-  bool create_logical_device();
+  void InitializeLoader();
+  bool InitializeInstance();
+  bool CreateDebugMessenger();
+  bool CheckInstanceExtensionSupport();
+  bool CheckValidationLayerSupport();
+  void EnableDebugValidation();
+  bool ChoosePhysicalDevice();
+  bool CreateLogicalDevice();
 
   Renderer _renderer;
 
@@ -27,6 +27,7 @@ private:
   vk::PhysicalDevice _physical_device;
   vk::Device _device;
   vk::DebugUtilsMessengerEXT _messenger;
+  uint32_t _queue_family_index;
 
   std::vector<const char *> _enabled_extensions;
   std::vector<const char *> _enabled_layers;

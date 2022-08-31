@@ -24,7 +24,7 @@ int main(void)
 
   Engine engine(extensions);
 
-  engine.create_renderer_from_window(window);
+  engine.CreateRendererFromWindow(window);
 
   std::cout << "created renderer successfully" << std::endl;
 

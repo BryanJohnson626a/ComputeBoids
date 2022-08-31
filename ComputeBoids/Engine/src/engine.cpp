@@ -18,20 +18,20 @@ VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityFlagBits
 Engine::Engine(std::vector<const char *> required_extensions) :
   _enabled_extensions(required_extensions)
 {
-  init_loader();
+  InitializeLoader();
 
-  if (!init_instance())
+  if (!InitializeInstance())
     throw std::runtime_error("Could not create instance.");
 
 #ifndef NDEBUG
-  if (!create_debug_messenger())
+  if (!CreateDebugMessenger())
     throw std::runtime_error("Could not create debug messenger.");
 #endif
 
-  if (!choose_physical_device())
+  if (!ChoosePhysicalDevice())
     throw std::runtime_error("Could not find a valid physical device.");
 
-  if (!create_logical_device())
+  if (!CreateLogicalDevice())
     throw std::runtime_error("Could not create a logical device.");
 
 }
@@ -41,14 +41,14 @@ Engine::~Engine()
   _instance.destroyDebugUtilsMessengerEXT(_messenger);
 }
 
-void Engine::init_loader()
+void Engine::InitializeLoader()
 {
   PFN_vkGetInstanceProcAddr vkGetInstanceProcAddr = _dl.getProcAddress<PFN_vkGetInstanceProcAddr>("vkGetInstanceProcAddr");
   VULKAN_HPP_DEFAULT_DISPATCHER.init(vkGetInstanceProcAddr);
 
 }
 
-bool Engine::init_instance()
+bool Engine::InitializeInstance()
 {
   vk::ApplicationInfo application_info{
       .pApplicationName = "test",
@@ -59,13 +59,13 @@ bool Engine::init_instance()
   };
 
 #ifndef NDEBUG
-  enable_debug_validation();
+  EnableDebugValidation();
 #endif
 
-  if (!check_validation_layer_support())
+  if (!CheckValidationLayerSupport())
     return false;
 
-  if (!check_instance_extension_support())
+  if (!CheckInstanceExtensionSupport())
     return false;
 
   vk::InstanceCreateInfo instance_ci{
@@ -93,7 +93,7 @@ bool Engine::init_instance()
   return true;
 }
 
-bool Engine::create_debug_messenger()
+bool Engine::CreateDebugMessenger()
 {
   vk::DebugUtilsMessengerCreateInfoEXT debug_ci{
     .messageSeverity = vk::DebugUtilsMessageSeverityFlagBitsEXT::eError
@@ -112,7 +112,7 @@ bool Engine::create_debug_messenger()
   return true;
 }
 
-bool Engine::check_instance_extension_support()
+bool Engine::CheckInstanceExtensionSupport()
 {
   auto available_instance_extensions = vk::enumerateInstanceExtensionProperties();
 
@@ -140,7 +140,7 @@ bool Engine::check_instance_extension_support()
   return true;
 }
 
-bool Engine::check_validation_layer_support()
+bool Engine::CheckValidationLayerSupport()
 {
   auto available_instance_layers = vk::enumerateInstanceLayerProperties();
 
@@ -168,13 +168,13 @@ bool Engine::check_validation_layer_support()
   return true;
 }
 
-void Engine::enable_debug_validation()
+void Engine::EnableDebugValidation()
 {
   _enabled_extensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
   _enabled_layers.push_back("VK_LAYER_KHRONOS_validation");
 }
 
-bool is_physical_device_valid(vk::PhysicalDevice device)
+bool IsPhysicalDeviceValid(vk::PhysicalDevice device)
 {
   auto properties = device.getProperties();
   auto features = device.getFeatures();
@@ -185,7 +185,7 @@ bool is_physical_device_valid(vk::PhysicalDevice device)
   return true;
 }
 
-bool Engine::choose_physical_device()
+bool Engine::ChoosePhysicalDevice()
 {
   auto [result, physical_devices] = _instance.enumeratePhysicalDevices();
 
@@ -196,7 +196,7 @@ bool Engine::choose_physical_device()
   }
 
   for (auto & physical_device : physical_devices)
-    if (is_physical_device_valid(physical_device))
+    if (IsPhysicalDeviceValid(physical_device))
     {
       _physical_device = physical_device;
       return true;
@@ -205,28 +205,36 @@ bool Engine::choose_physical_device()
   return false;
 }
 
-bool Engine::create_logical_device()
+bool Engine::CreateLogicalDevice()
 {
-  auto queue_family_index = find_queue_family(_physical_device);
+  // TODO: Don't store this in engine.
+  _queue_family_index = FindQueueFamily(_physical_device);
 
   //TODO: Handle device extensions better
   std::vector<const char *> extensions;
   extensions.push_back("VK_KHR_swapchain");
+  extensions.push_back("VK_KHR_dynamic_rendering");
 
   float queue_priority[1] = { 1 };
   vk::DeviceQueueCreateInfo device_queue_ci
   {
-    .queueFamilyIndex = queue_family_index,
+    .queueFamilyIndex = _queue_family_index,
     .queueCount = 1,
     .pQueuePriorities = queue_priority,
   };
 
+  vk::PhysicalDeviceDynamicRenderingFeatures dynamic_rendering_feature
+  {
+    .dynamicRendering = VK_TRUE,
+  };
+
   vk::DeviceCreateInfo device_ci
   {
+    .pNext = &dynamic_rendering_feature,
     .queueCreateInfoCount = 1,
     .pQueueCreateInfos = &device_queue_ci,
     .enabledExtensionCount = (uint32_t)extensions.size(),
-    .ppEnabledExtensionNames = extensions.data()
+    .ppEnabledExtensionNames = extensions.data(),
   };
 
   if (_validation_enabled)
@@ -246,7 +254,7 @@ bool Engine::create_logical_device()
   return true;
 }
 
-bool Engine::create_renderer_from_window(GLFWwindow * window_handle)
+bool Engine::CreateRendererFromWindow(GLFWwindow * window_handle)
 {
   VkSurfaceKHR surface_cstyle;
   auto result = glfwCreateWindowSurface(_instance, window_handle, nullptr, &surface_cstyle);
@@ -256,6 +264,6 @@ bool Engine::create_renderer_from_window(GLFWwindow * window_handle)
   if (result != VkResult::VK_SUCCESS)
     return false;
 
-  _renderer.initialize_with_surface(_instance, _device, surface, _physical_device);
+  _renderer.InitializeWithSurface(_instance, _device, surface, _physical_device, _queue_family_index);
   return true;
 }
