@@ -13,10 +13,8 @@ HunterGate(
 project("ComputeBoids")
 
 hunter_add_package(glfw)
-hunter_add_package(glslang)
 
 find_package(Vulkan REQUIRED FATAL_ERROR)
 find_package(glfw3 REQUIRED)
-#find_package(glslang CONFIG REQUIRED)
 
 add_subdirectory("ComputeBoids")

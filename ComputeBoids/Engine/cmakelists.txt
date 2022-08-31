@@ -19,7 +19,6 @@ target_compile_features(vulkan_engine PRIVATE
 target_link_libraries(vulkan_engine PUBLIC
   Vulkan::Vulkan
   glfw
-  #glslang::glslang
 )
 
 include_directories(${VulkanEngine_SOURCE_DIR}/src)
